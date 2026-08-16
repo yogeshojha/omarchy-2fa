@@ -50,9 +50,7 @@ def select_region():
 # grim's output goes straight into zbar over a pipe, so no image is written.
 def scan_region(geometry):
     _require(REGION_TOOLS)
-    grim = subprocess.Popen(
-        ["grim", "-g", geometry, "-"], stdout=subprocess.PIPE, stderr=subprocess.DEVNULL
-    )
+    grim = subprocess.Popen(["grim", "-g", geometry, "-"], stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
     try:
         decoder = subprocess.Popen(
             ["zbarimg", *_ZBAR_QR_ONLY, "-"],

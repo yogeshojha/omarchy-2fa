@@ -355,9 +355,7 @@ class ProtocolTest(unittest.TestCase):
         backup = self.vault.path.parent / (self.vault.path.name + ".previous")
         self.assertTrue(backup.is_file(), "the import should have rotated a backup into place")
 
-        self.converse(
-            [{"cmd": "unlock", "passphrase": PASSPHRASE}, {"cmd": "remove", "id": victim["id"]}]
-        )
+        self.converse([{"cmd": "unlock", "passphrase": PASSPHRASE}, {"cmd": "remove", "id": victim["id"]}])
         self.assertFalse(backup.exists(), "a removed secret must not survive in the backup")
         self.assertEqual([a.issuer for a in self.vault.load(PASSPHRASE)], ["AWS"])
 
