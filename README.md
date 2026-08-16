@@ -11,6 +11,11 @@ phone. Omarchy only.
 Keybind, type `gh`, Enter. The code is on your clipboard, wiped 30 seconds
 later.
 
+## Why
+
+When I am doing research work I keep my phone out of the room. It sits in the
+bedroom, and every code meant getting up to fetch it. So I built this.
+
 ## Install
 
 ```bash
