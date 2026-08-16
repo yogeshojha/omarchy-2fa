@@ -34,3 +34,23 @@ jobs:
       - name: ruff format
         if: always()
         run: ruff format --check --diff .
+
+  test:
+    name: tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - name: Install gpg
+        run: sudo apt-get update && sudo apt-get install -y gnupg
+
+      - name: Behaviour
+        run: python3 test/test_twofa.py
+
+      - name: Security properties
+        if: always()
+        run: python3 test/test_security.py

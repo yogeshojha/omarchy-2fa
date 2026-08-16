@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "yogeshojha.omafob",
   "name": "OmaFob",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "Yogesh Ojha",
   "license": "MIT",
   "description": "TOTP codes in the bar. Import every account from Google Authenticator in one scan.",

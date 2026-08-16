@@ -176,6 +176,7 @@ class ExternalCommandTest(unittest.TestCase):
     def test_copies_are_marked_sensitive(self):
         seen = {}
         real_run = clipboard.subprocess.run
+        real_which = clipboard.shutil.which
 
         def spy(command, **kwargs):
             seen["command"] = list(command)
@@ -186,7 +187,9 @@ class ExternalCommandTest(unittest.TestCase):
             return Result()
 
         clipboard.subprocess.run = spy
+        clipboard.shutil.which = lambda name: f"/usr/bin/{name}"
         self.addCleanup(lambda: setattr(clipboard.subprocess, "run", real_run))
+        self.addCleanup(lambda: setattr(clipboard.shutil, "which", real_which))
 
         clipboard.copy("123456", wipe_after=0)
         self.assertIn("--sensitive", seen["command"])
