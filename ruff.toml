@@ -1,0 +1,4 @@
+line-length = 115
+
+[lint]
+select = ["E", "F", "W", "I", "B", "SIM", "UP", "C4", "RET"]

@@ -1,3 +1,4 @@
+import contextlib
 import json
 import signal
 import subprocess
@@ -313,10 +314,8 @@ def serve(source=None, sink=None, vault=None):
     def shutdown(_signum, _frame):
         raise SystemExit(0)
 
-    try:
+    with contextlib.suppress(ValueError):
         signal.signal(signal.SIGTERM, shutdown)
-    except ValueError:
-        pass
 
     try:
         _serve_loop(session, source, sink)

@@ -8,9 +8,10 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from twofa import camera, clipboard, migration, otp, vault as vault_module
+from twofa import camera, clipboard, migration, otp
+from twofa import vault as vault_module
 from twofa.accounts import Account
-from twofa.vault import Vault
+from twofa.vault import PassphraseError, Vault
 
 PASSPHRASE = "a passphrase that must never leak"
 SECRET = otp.encode_secret(b"12345678901234567890")
@@ -93,7 +94,7 @@ class OnDiskTest(unittest.TestCase):
         self.vault.save([Account(issuer="GitHub", secret=SECRET)], PASSPHRASE)
         before = self.vault.path.read_bytes()
 
-        with self.assertRaises(Exception):
+        with self.assertRaises(PassphraseError):
             self.vault.save([Account(issuer="AWS", secret=SECRET)], "bad\npassphrase")
 
         self.assertEqual(self.vault.path.read_bytes(), before)

@@ -117,6 +117,7 @@ omafob passwd                   # change the passphrase
 ```bash
 python3 test/test_twofa.py
 python3 test/test_security.py
+ruff check .
 qmllint -I /usr/share/omarchy/shell *.qml
 omarchy plugin validate .
 ```

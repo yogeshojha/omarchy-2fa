@@ -464,6 +464,8 @@ Panel {
         Loader {
           id: content
           width: parent.width
+          // Destroyed on close, so a half-typed passphrase does not survive it.
+          active: root.opened
           sourceComponent: {
             switch (root.view) {
               case "unavailable": return unavailableView

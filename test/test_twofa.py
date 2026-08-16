@@ -9,7 +9,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from twofa import migration, otp, protocol
 from twofa.accounts import HOTP, TOTP, Account, merge
-from twofa.vault import PassphraseError, Vault, VaultError
+from twofa.vault import PassphraseError, Vault
 
 RFC_SECRET = otp.encode_secret(b"12345678901234567890")
 PASSPHRASE = "correct horse battery staple"
@@ -71,7 +71,8 @@ class TotpTest(unittest.TestCase):
     def test_secret_accepts_lowercase_spaces_and_missing_padding(self):
         canonical = otp.decode_secret(RFC_SECRET)
         self.assertEqual(otp.decode_secret(RFC_SECRET.lower()), canonical)
-        self.assertEqual(otp.decode_secret(" ".join(RFC_SECRET[i : i + 4] for i in range(0, len(RFC_SECRET), 4))), canonical)
+        spaced = " ".join(RFC_SECRET[i : i + 4] for i in range(0, len(RFC_SECRET), 4))
+        self.assertEqual(otp.decode_secret(spaced), canonical)
 
     def test_invalid_secret_is_rejected(self):
         for bad in ("", "not base32!", "1"):
@@ -106,7 +107,8 @@ class MigrationTest(unittest.TestCase):
         self.assertFalse(accounts[2].supported)
 
     def test_strips_a_repeated_issuer_prefix_from_the_label(self):
-        link = _migration_link([("GitHub", "GitHub:yogesh", b"\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0a", 1, 1, 2, 0)])
+        secret = b"\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0a"
+        link = _migration_link([("GitHub", "GitHub:yogesh", secret, 1, 1, 2, 0)])
         self.assertEqual(migration.parse(link)[0].label, "yogesh")
 
     def test_reads_a_plain_otpauth_link(self):
@@ -292,7 +294,9 @@ class ProtocolTest(unittest.TestCase):
                 ("AWS", "root", b"\x0b\x0c\x0d\x0e\x0f\x10\x11\x12\x13\x14", 1, 1, 2, 0),
             ]
         )
-        setup = self.converse([{"cmd": "create", "passphrase": PASSPHRASE}, {"cmd": "add", "text": link}, {"cmd": "codes"}])
+        setup = self.converse(
+            [{"cmd": "create", "passphrase": PASSPHRASE}, {"cmd": "add", "text": link}, {"cmd": "codes"}]
+        )
         victim = setup[2]["accounts"][0]["id"]
 
         replies = self.converse(
@@ -485,9 +489,8 @@ class CameraTest(unittest.TestCase):
         self.assertTrue(self.scanner().stopped)
 
     def test_closing_the_agent_releases_the_camera(self):
-        source = io.StringIO(
-            '{"cmd": "unlock", "passphrase": %s}\n{"cmd": "cameraStart"}\n' % json.dumps(PASSPHRASE)
-        )
+        unlock = json.dumps({"cmd": "unlock", "passphrase": PASSPHRASE})
+        source = io.StringIO(unlock + '\n{"cmd": "cameraStart"}\n')
         protocol.serve(source=source, sink=io.StringIO(), vault=self.vault)
         self.assertTrue(self.scanner().stopped)
 
@@ -507,7 +510,8 @@ class ManifestTest(unittest.TestCase):
         self.model = (self.ROOT / "Model.js").read_text()
 
     def model_array(self, name):
-        import json, re
+        import json
+        import re
 
         return json.loads(re.search(rf"var {name} = (\[[^\]]*\])", self.model).group(1))
 

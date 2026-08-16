@@ -66,8 +66,7 @@ def _run_gpg(arguments, passphrase, payload):
         return subprocess.run(
             _GPG_COMMON + ["--passphrase-fd", str(reader)] + arguments,
             input=payload,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
+            capture_output=True,
             pass_fds=(reader,),
             check=False,
         )
