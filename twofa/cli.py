@@ -26,7 +26,7 @@ def _ask_new():
 
 def _open(vault):
     if not vault.exists():
-        raise CliError("no vault yet — run `omarchy-2fa scan` or `omarchy-2fa add <link>` to create one")
+        raise CliError("no vault yet. run `omafob scan` or `omafob add <link>` to create one")
     passphrase = _ask()
     return vault.load(passphrase), passphrase
 
@@ -153,7 +153,7 @@ def command_agent(vault, _args):
 
 
 def build_parser():
-    parser = argparse.ArgumentParser(prog="omarchy-2fa", description="Two-factor codes for the Omarchy bar")
+    parser = argparse.ArgumentParser(prog="omafob", description="Two-factor codes for the Omarchy bar")
     parser.add_argument("--version", action="version", version=VERSION)
     parser.add_argument("--vault", help="path to the encrypted vault")
 
@@ -198,7 +198,7 @@ def main(argv=None):
     try:
         return HANDLERS[args.command](Vault(args.vault), args)
     except (CliError, VaultError, camera.CameraError, capture.CaptureError, migration.ParseError) as error:
-        print(f"omarchy-2fa: {error}", file=sys.stderr)
+        print(f"omafob: {error}", file=sys.stderr)
         return 1
     except KeyboardInterrupt:
         return 130

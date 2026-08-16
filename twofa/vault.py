@@ -43,7 +43,7 @@ class PassphraseError(VaultError):
 
 def default_path():
     data_home = os.environ.get("XDG_DATA_HOME") or Path.home() / ".local" / "share"
-    return Path(data_home) / "omarchy-2fa" / "vault.gpg"
+    return Path(data_home) / "omafob" / "vault.gpg"
 
 
 def check_passphrase(passphrase):

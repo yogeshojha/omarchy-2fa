@@ -6,8 +6,8 @@ import "Model.js" as Model
 Panel {
   id: root
 
-  moduleName: "yogeshojha.twofa"
-  ipcTarget: "yogeshojha.twofa"
+  moduleName: "yogeshojha.omafob"
+  ipcTarget: "yogeshojha.omafob"
 
   implicitWidth: barSlot.implicitWidth
   implicitHeight: barSlot.implicitHeight
@@ -200,7 +200,7 @@ Panel {
       return
     }
     vault.create(passphrase, function(response) {
-      if (response.ok) setNotice("Vault created — import your accounts", false)
+      if (response.ok) setNotice("Vault created. Import your accounts.", false)
       else setNotice(Model.errorText(response), true)
     })
   }
@@ -405,7 +405,7 @@ Panel {
 
             Text {
               anchors.verticalCenter: parent.verticalCenter
-              text: "2FA"
+              text: "OmaFob"
               color: root.foreground
               font.family: root.fontFamily
               font.pixelSize: Style.font.subtitle
@@ -521,7 +521,7 @@ Panel {
       spacing: Style.spacing.sm
 
       Text {
-        text: "Cannot reach the 2FA helper"
+        text: "Cannot reach the OmaFob helper"
         color: root.urgent
         font.family: root.fontFamily
         font.pixelSize: Style.font.body
@@ -529,7 +529,7 @@ Panel {
 
       Text {
         width: parent.width
-        text: "The omarchy-2fa file in the plugin folder may not be executable.\nFix that, then run: omarchy-shell shell rescanPlugins"
+        text: "The omafob file in the plugin folder may not be executable.\nFix that, then run: omarchy-shell shell rescanPlugins"
         color: root.dim
         font.family: root.fontFamily
         font.pixelSize: Style.font.caption
@@ -548,8 +548,8 @@ Panel {
 
       Text {
         width: parent.width
-        text: "This passphrase is the only key to your accounts. You enter it "
-          + "once per session. It cannot be reset or recovered."
+        text: "Encrypts your accounts. Entered once per session. Cannot be "
+          + "reset or recovered."
         color: root.dim
         font.family: root.fontFamily
         font.pixelSize: Style.font.caption
@@ -620,8 +620,8 @@ Panel {
       Text {
         width: parent.width
         text: "In Google Authenticator: ⋮ → Transfer accounts → Export accounts. "
-          + "That one QR holds every account. Hold it up to your camera, or put "
-          + "it on this screen and drag a box over it."
+          + "Hold the QR up to your camera, or put it on this screen and drag "
+          + "a box over it."
         color: root.dim
         font.family: root.fontFamily
         font.pixelSize: Style.font.caption

@@ -39,10 +39,10 @@ Item {
   }
 
   readonly property string tooltip: {
-    if (vaultState === Model.VAULT_UNAVAILABLE) return "2FA — helper not running"
-    if (vaultState === Model.VAULT_MISSING) return "2FA — set up your vault"
-    if (vaultState === Model.VAULT_LOCKED) return "2FA — locked"
-    return pinned ? "2FA — " + Model.accountTitle(pinned) : "2FA"
+    if (vaultState === Model.VAULT_UNAVAILABLE) return "OmaFob: helper not running"
+    if (vaultState === Model.VAULT_MISSING) return "OmaFob: set up your vault"
+    if (vaultState === Model.VAULT_LOCKED) return "OmaFob: locked"
+    return pinned ? "OmaFob: " + Model.accountTitle(pinned) : "OmaFob"
   }
 
   implicitWidth: slot.implicitWidth

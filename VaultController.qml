@@ -14,7 +14,7 @@ Item {
   property int autoLockSeconds: 0
 
   readonly property string helperPath: decodeURIComponent(
-    String(Qt.resolvedUrl("omarchy-2fa")).replace("file://", ""))
+    String(Qt.resolvedUrl("omafob")).replace("file://", ""))
 
   readonly property string vaultState: _vaultState
   readonly property var accounts: _accounts
