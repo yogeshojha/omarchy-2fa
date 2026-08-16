@@ -29,18 +29,17 @@ Panel {
   readonly property color dim: Color.muted
   readonly property string fontFamily: bar ? bar.fontFamily : Style.font.family
 
-  readonly property string barDisplay: Model.barDisplay(setting("barDisplay", "Icon"))
   readonly property string autoLock: Model.oneOf(setting("autoLock", "Never"), Model.AUTO_LOCK_OPTIONS)
   readonly property string clipboardWipe: Model.oneOf(setting("clipboardWipe", "30 seconds"), Model.CLIPBOARD_OPTIONS)
   readonly property bool groupDigits: Model.boolean(setting("groupDigits", true), true)
-  readonly property string pinnedQuery: String(setting("pinned", "") || "")
+  readonly property bool privacyMode: Model.boolean(setting("privacyMode", false), false)
+  readonly property bool showRing: Model.boolean(setting("showRing", false), false)
 
   readonly property var accounts: vault.accounts
   readonly property var visibleAccounts: Model.filterAccounts(accounts, filter)
   readonly property var selected: visibleAccounts.length > 0
     ? visibleAccounts[Math.max(0, Math.min(cursor, visibleAccounts.length - 1))]
     : null
-  readonly property var pinned: Model.findPinned(accounts, pinnedQuery)
   readonly property bool removalOpen: !!pendingRemoval
   readonly property string vaultState: vault.vaultState
   readonly property bool vaultUnlocked: vault.unlocked
@@ -98,12 +97,6 @@ Panel {
       setNotice("Copied " + Model.accountTitle(account)
         + (seconds > 0 ? " · clears in " + seconds + "s" : ""), false)
     })
-  }
-
-  function pinAccount(account) {
-    if (!account) return
-    persist({ pinned: Model.accountTitle(account) })
-    setNotice("Pinned " + Model.accountTitle(account), false)
   }
 
   function requestRemoval(account) {
@@ -275,7 +268,6 @@ Panel {
       if (vaultUnlocked && event.key === Qt.Key_S) { settingsOpen = !settingsOpen; event.accepted = true; return }
       if (vaultUnlocked && event.key === Qt.Key_I) { scanRegion(); event.accepted = true; return }
       if (vaultUnlocked && event.key === Qt.Key_W) { startCamera(); event.accepted = true; return }
-      if (view === "list" && event.key === Qt.Key_P) { pinAccount(selected); event.accepted = true; return }
     }
 
     if (view !== "list") return
@@ -811,7 +803,6 @@ Panel {
           panel: root
           onActivated: root.copyAccount(modelData)
           onHovered: root.cursor = index
-          onPinRequested: root.pinAccount(modelData)
           onRemoveRequested: root.requestRemoval(modelData)
         }
       }
@@ -829,7 +820,7 @@ Panel {
 
       Text {
         width: parent.width
-        text: "↵ copy  ↑↓ move  Del remove  ^P pin  ^I import  ^S settings  ^L lock"
+        text: "↵ copy  ↑↓ move  Del remove  ^I import  ^S settings  ^L lock"
         color: root.dim
         font.family: root.fontFamily
         font.pixelSize: Style.font.caption

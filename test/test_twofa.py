@@ -516,7 +516,6 @@ class ManifestTest(unittest.TestCase):
     # A drifted option silently falls back to the first one through oneOf().
     def test_enum_options_match_the_model(self):
         for key, constant in (
-            ("barDisplay", "BAR_DISPLAYS"),
             ("autoLock", "AUTO_LOCK_OPTIONS"),
             ("clipboardWipe", "CLIPBOARD_OPTIONS"),
         ):

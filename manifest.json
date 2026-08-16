@@ -14,7 +14,7 @@
   },
   "barWidget": {
     "displayName": "OmaFob",
-    "description": "Your two-factor codes in the bar, with a ring counting down to the next one. Bring every account over from Google Authenticator in one scan, then copy a code without reaching for your phone.",
+    "description": "Your two-factor codes in the bar. Bring every account over from Google Authenticator in one scan, then copy a code without reaching for your phone.",
     "category": "Security",
     "aliases": [
       "2fa",
@@ -26,31 +26,26 @@
     "allowMultiple": false,
     "defaultSection": "right",
     "defaults": {
-      "barDisplay": "Icon",
-      "pinned": "",
+      "privacyMode": false,
+      "showRing": false,
       "clipboardWipe": "30 seconds",
       "autoLock": "Never",
       "groupDigits": true
     },
     "schema": [
       {
-        "key": "barDisplay",
-        "type": "enum",
-        "label": "Bar display",
-        "options": [
-          "Icon",
-          "Masked code",
-          "Code"
-        ],
-        "defaultValue": "Icon",
-        "description": "Icon shows a shield and the countdown ring, and no code until you open the panel. Masked code shows the pinned account as dots that fill in while the panel is open. Code leaves it readable all the time, including in any screenshot you take."
+        "key": "privacyMode",
+        "type": "boolean",
+        "label": "Privacy mode",
+        "defaultValue": false,
+        "description": "Never show a code in the panel. Rows stay masked and Enter still copies. For screen sharing and open offices."
       },
       {
-        "key": "pinned",
-        "type": "string",
-        "label": "Pinned account",
-        "defaultValue": "",
-        "description": "Which account the bar shows. Matches on issuer or label, so github is enough."
+        "key": "showRing",
+        "type": "boolean",
+        "label": "Countdown ring",
+        "defaultValue": false,
+        "description": "Draw a ring around the bar icon counting down to the next code."
       },
       {
         "key": "clipboardWipe",

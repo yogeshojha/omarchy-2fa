@@ -1,4 +1,3 @@
-var BAR_DISPLAYS = ["Icon", "Masked code", "Code"]
 var AUTO_LOCK_OPTIONS = ["Never", "5 minutes", "15 minutes", "1 hour"]
 
 var AUTO_LOCK_SECONDS = {
@@ -51,10 +50,6 @@ function oneOf(value, options) {
   return options.indexOf(candidate) >= 0 ? candidate : options[0]
 }
 
-function barDisplay(value) {
-  return oneOf(value, BAR_DISPLAYS)
-}
-
 function autoLockSeconds(value) {
   return AUTO_LOCK_SECONDS[oneOf(value, AUTO_LOCK_OPTIONS)]
 }
@@ -84,14 +79,6 @@ function filterAccounts(accounts, query) {
   var trimmed = String(query || "").trim()
   if (!trimmed) return list
   return list.filter(function(account) { return matches(account, trimmed) })
-}
-
-// An empty pin falls back to the first account.
-function findPinned(accounts, query) {
-  var list = Array.isArray(accounts) ? accounts : []
-  if (list.length === 0) return null
-  var found = filterAccounts(list, query)
-  return found.length > 0 ? found[0] : null
 }
 
 // -------------------------------------------------------------- formatting
@@ -138,6 +125,18 @@ function windowProgress(account, now) {
 
 function isExpiring(account, now) {
   return !!account && secondsLeft(account, now) <= EXPIRING_SECONDS
+}
+
+// The bar ring counts down whichever code rolls over next.
+function soonestAccount(accounts) {
+  var list = Array.isArray(accounts) ? accounts : []
+  var best = null
+  for (var i = 0; i < list.length; i++) {
+    var at = number(list[i].expiresAt)
+    if (at <= 0 || !list[i].code) continue
+    if (best === null || at < number(best.expiresAt)) best = list[i]
+  }
+  return best
 }
 
 function soonestExpiry(accounts) {

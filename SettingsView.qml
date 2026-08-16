@@ -10,28 +10,26 @@ Column {
 
   spacing: Style.spacing.lg
 
-  PanelSectionHeader { foreground: panel.foreground; fontFamily: panel.fontFamily; text: "BAR DISPLAY" }
-
-  ButtonGroup {
+  Toggle {
     width: parent.width
-    options: Model.BAR_DISPLAYS
-    value: panel.barDisplay
+    label: "Privacy mode"
+    description: "Never show a code. Enter still copies."
+    checked: panel.privacyMode
     foreground: panel.foreground
     accent: panel.accent
     fontFamily: panel.fontFamily
-    onChanged: function(value) { panel.persist({ barDisplay: value }) }
+    onClicked: panel.persist({ privacyMode: !panel.privacyMode })
   }
 
-  Text {
+  Toggle {
     width: parent.width
-    visible: panel.barDisplay !== "Icon"
-    text: panel.pinned
-      ? "The bar shows " + Model.accountTitle(panel.pinned) + ". Press ^P on a row to pin a different one."
-      : "Nothing matches the pinned name, so the bar shows the icon instead."
-    color: panel.dim
-    font.family: panel.fontFamily
-    font.pixelSize: Style.font.caption
-    wrapMode: Text.WordWrap
+    label: "Countdown ring"
+    description: "Ring around the bar icon"
+    checked: panel.showRing
+    foreground: panel.foreground
+    accent: panel.accent
+    fontFamily: panel.fontFamily
+    onClicked: panel.persist({ showRing: !panel.showRing })
   }
 
   PanelSeparator { foreground: panel.foreground }

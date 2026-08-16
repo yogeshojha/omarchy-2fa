@@ -12,7 +12,6 @@ BorderSurface {
 
   signal activated()
   signal hovered()
-  signal pinRequested()
   signal removeRequested()
 
   readonly property color foreground: panel ? panel.foreground : Color.popups.text
@@ -21,6 +20,7 @@ BorderSurface {
   readonly property color dim: panel ? panel.dim : Color.muted
   readonly property string fontFamily: panel ? panel.fontFamily : Style.font.family
   readonly property bool grouped: panel ? panel.groupDigits : true
+  readonly property bool masked: !!panel && panel.privacyMode
   readonly property double now: panel ? panel.vaultNow : 0
 
   readonly property bool active: selected || pointer.containsMouse
@@ -118,7 +118,9 @@ BorderSurface {
     Text {
       anchors.verticalCenter: parent.verticalCenter
       visible: root.readable
-      text: Model.groupCode(root.account ? root.account.code : "", root.grouped)
+      text: root.masked
+        ? Model.maskCode(root.account ? root.account.digits : 6, root.grouped)
+        : Model.groupCode(root.account ? root.account.code : "", root.grouped)
       color: root.codeColor
       font.family: root.fontFamily
       font.pixelSize: Style.font.title
@@ -136,19 +138,6 @@ BorderSurface {
     }
 
     // Keeps the code column fixed as the cursor moves.
-    PanelActionButton {
-      anchors.verticalCenter: parent.verticalCenter
-      opacity: root.active ? 1 : 0
-      enabled: root.active
-      iconText: "\uf08d"
-      tooltipText: "Pin to the bar"
-      foreground: root.subtle
-      hoverColor: root.accent
-      fontFamily: root.fontFamily
-      fontSize: Style.font.bodySmall
-      onClicked: root.pinRequested()
-    }
-
     PanelActionButton {
       anchors.verticalCenter: parent.verticalCenter
       opacity: root.active ? 1 : 0

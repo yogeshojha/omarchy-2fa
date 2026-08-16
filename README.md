@@ -47,7 +47,6 @@ Re-importing the same export is safe. Accounts already stored are skipped.
 | `↑` `↓` | move |
 | `Backspace` / `Ctrl+U` | edit or clear the filter |
 | `Del` | remove an account |
-| `Ctrl+P` | pin to the bar |
 | `Ctrl+I` | scan the screen |
 | `Ctrl+W` | scan from the camera |
 | `Ctrl+S` | settings |
@@ -62,15 +61,14 @@ Letters go to the filter.
 
 | | |
 |---|---|
-| Bar display | `Icon`, `Masked code`, `Code` |
-| Pinned account | matches issuer or label, so `github` is enough |
+| Privacy mode | codes stay masked in the panel, default off |
+| Countdown ring | ring around the bar icon, default off |
 | Clear clipboard after | default 30 seconds |
 | Auto-lock vault | default off |
 | Group digits | `418 293` instead of `418293` |
 
-`Icon` keeps codes off screen until you open the panel. `Masked code` shows the
-pinned account as `••• •••`, readable while the panel is open. `Code` is always
-readable, including in screenshots.
+Privacy mode shows every account as `••• •••` and never reveals a code. `Enter`
+still copies. For screen sharing and open offices.
 
 ## Security
 
