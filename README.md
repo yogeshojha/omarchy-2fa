@@ -3,7 +3,7 @@
 Two-factor codes in the Omarchy bar. Import every account from Google
 Authenticator in one scan.
 
-![The OmaFob panel](preview.png)
+![The OmaFob panel](screenshots/panel.png)
 
 Not a login guard for Omarchy. It replaces the authenticator app on your
 phone. Omarchy only.
@@ -69,6 +69,8 @@ Letters go to the filter.
 
 Privacy mode shows every account as `••• •••` and never reveals a code. `Enter`
 still copies. For screen sharing and open offices.
+
+![Privacy mode](screenshots/privacy.png)
 
 ## Security
 
