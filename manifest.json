@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "id": "yogeshojha.omafob",
+  "name": "OmaFob",
+  "version": "0.1.0",
+  "author": "Yogesh Ojha",
+  "license": "MIT",
+  "description": "TOTP codes in the bar. Import every account from Google Authenticator in one scan.",
+  "kinds": [
+    "bar-widget"
+  ],
+  "entryPoints": {
+    "barWidget": "Panel.qml"
+  },
+  "barWidget": {
+    "displayName": "OmaFob",
+    "description": "Your two-factor codes in the bar. Bring every account over from Google Authenticator in one scan, then copy a code without reaching for your phone.",
+    "category": "Security",
+    "aliases": [
+      "2fa",
+      "totp",
+      "otp",
+      "authenticator",
+      "fob"
+    ],
+    "allowMultiple": false,
+    "defaultSection": "right",
+    "defaults": {
+      "privacyMode": false,
+      "showRing": false,
+      "clipboardWipe": "30 seconds",
+      "autoLock": "Never",
+      "groupDigits": true
+    },
+    "schema": [
+      {
+        "key": "privacyMode",
+        "type": "boolean",
+        "label": "Privacy mode",
+        "defaultValue": false,
+        "description": "Never show a code in the panel. Rows stay masked and Enter still copies. For screen sharing and open offices."
+      },
+      {
+        "key": "showRing",
+        "type": "boolean",
+        "label": "Countdown ring",
+        "defaultValue": false,
+        "description": "Draw a ring around the bar icon counting down to the next code."
+      },
+      {
+        "key": "clipboardWipe",
+        "type": "enum",
+        "label": "Clear clipboard after",
+        "options": [
+          "Never",
+          "15 seconds",
+          "30 seconds",
+          "1 minute",
+          "2 minutes"
+        ],
+        "defaultValue": "30 seconds",
+        "description": "How long a copied code stays on the clipboard. Nothing is cleared if you have copied something else since."
+      },
+      {
+        "key": "autoLock",
+        "type": "enum",
+        "label": "Auto-lock vault",
+        "options": [
+          "Never",
+          "5 minutes",
+          "15 minutes",
+          "1 hour"
+        ],
+        "defaultValue": "Never",
+        "description": "How long the vault stays unlocked while you are not using it. With Never you unlock once and it stays open until you log out."
+      },
+      {
+        "key": "groupDigits",
+        "type": "boolean",
+        "label": "Group digits",
+        "defaultValue": true,
+        "description": "Show 418 293 instead of 418293."
+      }
+    ]
+  }
+}
