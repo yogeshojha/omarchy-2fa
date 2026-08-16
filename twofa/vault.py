@@ -56,7 +56,7 @@ def check_passphrase(passphrase):
     return text
 
 
-# argv is world readable through /proc, so the passphrase goes on its own fd.
+# argv is world readable through /proc.
 def _run_gpg(arguments, passphrase, payload):
     reader, writer = os.pipe()
     os.set_inheritable(reader, True)
@@ -102,7 +102,7 @@ class Vault:
 
         return [Account.from_dict(entry) for entry in document.get("accounts") or []]
 
-    # Deleting an account also drops .previous, which still holds it.
+    # Deleting an account also drops .previous.
     def save(self, accounts, passphrase, keep_previous=True):
         payload = json.dumps(
             {"version": FORMAT_VERSION, "accounts": [account.to_dict() for account in accounts]},
@@ -116,7 +116,7 @@ class Vault:
 
         self._write(result.stdout, keep_previous)
 
-    # Written to a temp file and renamed, so a crash leaves the old vault in place.
+    # Temp file and rename, for an atomic replace.
     def _write(self, ciphertext, keep_previous=True):
         directory = self.path.parent
         directory.mkdir(parents=True, exist_ok=True, mode=0o700)

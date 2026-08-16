@@ -199,6 +199,20 @@ class ExternalCommandTest(unittest.TestCase):
         self.assertIn("-Sdisable", camera._ARGS)
         self.assertIn("-Sqrcode.enable", camera._ARGS)
 
+    # slurp once read a JSON command as a region box.
+    def test_no_child_inherits_the_protocol_stdin(self):
+        import ast
+
+        helper = Path(__file__).resolve().parents[1] / "twofa"
+        for source in sorted(helper.glob("*.py")):
+            for node in ast.walk(ast.parse(source.read_text())):
+                if isinstance(node, ast.Call) and getattr(node.func, "attr", "") in ("run", "Popen"):
+                    keywords = {k.arg for k in node.keywords}
+                    self.assertTrue(
+                        keywords & {"stdin", "input"},
+                        f"{source.name}:{node.lineno} spawns a child without controlling stdin",
+                    )
+
     def test_no_helper_command_is_run_through_a_shell(self):
         helper = Path(__file__).resolve().parents[1] / "twofa"
         sources = [helper / name for name in ("camera.py", "capture.py", "clipboard.py", "vault.py")]

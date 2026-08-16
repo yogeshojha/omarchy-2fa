@@ -284,7 +284,7 @@ def _respond(sequence, payload=None, message=None, code=None):
     return response
 
 
-# The reply carries vault state, so the shell notices an auto-lock.
+# The reply carries vault state.
 def _failure(session, sequence, error, code):
     response = _respond(sequence, message=str(error) or error.__class__.__name__, code=code)
     response.update(session.status())

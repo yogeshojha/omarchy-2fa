@@ -47,7 +47,7 @@ BorderSurface {
     onClicked: root.activated()
   }
 
-  // Anchored top to bottom so children centre against the full row height.
+  // Children centre against the full row height.
   Row {
     anchors.left: parent.left
     anchors.right: actions.left
@@ -135,7 +135,7 @@ BorderSurface {
       font.bold: true
     }
 
-    // Kept in the layout so the code column does not shift with the cursor.
+    // Keeps the code column fixed as the cursor moves.
     PanelActionButton {
       anchors.verticalCenter: parent.verticalCenter
       opacity: root.active ? 1 : 0

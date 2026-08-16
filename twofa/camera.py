@@ -18,7 +18,7 @@ def available():
     return shutil.which(_TOOL) is not None
 
 
-# Runs zbarcam in a thread so the caller can poll it and stop it.
+# zbarcam in a thread, polled through finished and outcome().
 class Scanner:
     def __init__(self, device=None, timeout=DEFAULT_TIMEOUT):
         self.device = device
@@ -47,6 +47,7 @@ class Scanner:
         try:
             self._process = subprocess.Popen(
                 command,
+                stdin=subprocess.DEVNULL,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.DEVNULL,
                 preexec_fn=die_with_parent,

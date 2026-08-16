@@ -36,10 +36,14 @@ def _wipe(expected):
     if shutil.which("wl-paste") is None:
         return
     result = subprocess.run(
-        ["wl-paste", "--no-newline"], stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, check=False
+        ["wl-paste", "--no-newline"],
+        stdin=subprocess.DEVNULL,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.DEVNULL,
+        check=False,
     )
     if result.returncode != 0:
         return
     if result.stdout.decode("utf-8", "replace") != expected:
         return
-    subprocess.run(["wl-copy", "--clear"], check=False, **_QUIET)
+    subprocess.run(["wl-copy", "--clear"], stdin=subprocess.DEVNULL, check=False, **_QUIET)

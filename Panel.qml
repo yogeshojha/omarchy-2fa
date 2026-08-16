@@ -138,13 +138,10 @@ Panel {
     if (response.error !== "cancelled") setNotice(Model.errorText(response), true)
   }
 
-  // The panel covers the QR.
+  // The panel's surface stays mapped through the fade.
   function scanRegion() {
     close()
-    vault.scan(function(response) {
-      root.reportImport(response)
-      root.open()
-    })
+    regionDelay.restart()
   }
 
   function startCamera() {
@@ -248,7 +245,7 @@ Panel {
 
   // ------------------------------------------------------------- keyboard
 
-  // Letters go to the filter, so no shortcut is a bare letter.
+  // Letters go to the filter.
   function handleKey(event) {
     // The confirmation takes every key, Tab included.
     if (removalOpen) {
@@ -330,6 +327,17 @@ Panel {
     id: vault
     active: root.opened
     autoLockSeconds: Model.autoLockSeconds(root.autoLock)
+  }
+
+  Timer {
+    id: regionDelay
+    interval: 250
+    repeat: false
+    // Opening clears the notice.
+    onTriggered: vault.scan(function(response) {
+      root.open()
+      root.reportImport(response)
+    })
   }
 
   Timer {
@@ -464,7 +472,7 @@ Panel {
         Loader {
           id: content
           width: parent.width
-          // Destroyed on close, so a half-typed passphrase does not survive it.
+          // Nothing typed survives a close.
           active: root.opened
           sourceComponent: {
             switch (root.view) {

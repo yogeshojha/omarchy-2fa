@@ -36,21 +36,31 @@ def select_region():
     _require(("slurp",))
     result = subprocess.run(
         ["slurp"],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.DEVNULL,
+        stdin=subprocess.DEVNULL,
+        capture_output=True,
         check=False,
         preexec_fn=die_with_parent,
     )
     geometry = result.stdout.decode("utf-8", "replace").strip()
-    if result.returncode != 0 or not geometry:
-        raise CaptureCancelled("no region was selected")
-    return geometry
+    if geometry:
+        return geometry
+
+    # Empty stderr means the user cancelled.
+    complaint = result.stderr.decode("utf-8", "replace").strip()
+    if complaint:
+        raise CaptureError(f"slurp could not start: {complaint.splitlines()[0]}")
+    raise CaptureCancelled("no region was selected")
 
 
-# grim's output goes straight into zbar over a pipe, so no image is written.
+# Piped into zbar. No image is written.
 def scan_region(geometry):
     _require(REGION_TOOLS)
-    grim = subprocess.Popen(["grim", "-g", geometry, "-"], stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+    grim = subprocess.Popen(
+        ["grim", "-g", geometry, "-"],
+        stdin=subprocess.DEVNULL,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.DEVNULL,
+    )
     try:
         decoder = subprocess.Popen(
             ["zbarimg", *_ZBAR_QR_ONLY, "-"],
@@ -77,6 +87,7 @@ def scan_file(path):
 
     result = subprocess.run(
         ["zbarimg", *_ZBAR_QR_ONLY, str(image)],
+        stdin=subprocess.DEVNULL,
         stdout=subprocess.PIPE,
         stderr=subprocess.DEVNULL,
         check=False,

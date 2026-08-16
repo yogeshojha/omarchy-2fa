@@ -3,7 +3,7 @@ import signal
 
 _PR_SET_PDEATHSIG = 1
 
-# dlopen after fork() is not async-signal-safe, so libc is resolved up front.
+# dlopen after fork() is not async-signal-safe.
 try:
     _libc = ctypes.CDLL("libc.so.6", use_errno=True)
 except OSError:

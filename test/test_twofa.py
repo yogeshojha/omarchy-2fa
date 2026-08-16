@@ -236,7 +236,7 @@ class ProtocolTest(unittest.TestCase):
         self.assertEqual(replies[0]["seq"], 42)
         self.assertEqual(replies[0]["error"], "unknown-command")
 
-    # They shared a field once, which broke every copy and remove.
+    # These shared a field once. Copy and remove both broke.
     def test_an_account_id_survives_alongside_a_sequence(self):
         link = _migration_link([("GitHub", "yogesh", b"\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0a", 1, 1, 2, 0)])
         setup = self.converse(
