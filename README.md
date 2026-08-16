@@ -1,9 +1,9 @@
 # OmaFob
 
-Two-factor codes in the Omarchy bar. Import every account from Google
-Authenticator in one scan.
+Two-factor codes in the [Omarchy](https://omarchy.org/) bar. Import every
+account from Google Authenticator in one scan.
 
-![The OmaFob panel](screenshots/panel.png)
+![The OmaFob panel](preview.png)
 
 Not a login guard for Omarchy. It replaces the authenticator app on your
 phone. Omarchy only.
